@@ -3,8 +3,10 @@ require 'i18n'
 require 'conformitas'
 require 'aequitas'
 require 'web_helpers'
+require 'immutable'
 
 require 'form/message_transformer'
+require 'form/message_transformer/aequitas'
 
 require 'form/null_input'
 require 'form/field'

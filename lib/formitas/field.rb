@@ -1,5 +1,6 @@
 #encoding: utf-8
 module Formitas
+  # Represent a HTML form field
   class Field
     include Virtus::ValueObject, WebHelpers, AbstractClass, Immutable
 

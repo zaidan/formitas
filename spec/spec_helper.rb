@@ -1,6 +1,6 @@
 $: << 'lib'
 
-require 'form'
+require 'formitas'
 
 
 # require spec support files and shared behavior

@@ -1,7 +1,7 @@
 #encoding: utf-8
 require 'spec_helper'
 
-describe Form::Field, '#render' do
+describe Formitas::Field, '#render' do
   subject { described_class.new(attributes) }
 
   let(:attributes) do

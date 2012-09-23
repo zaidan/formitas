@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Form::MessageTransformer, '.transform' do
+describe Formitas::MessageTransformer, '.transform' do
   subject                { object.transform(violation)     }
   let(:object)           { described_class                 }
   let_mock(:violation)   { { :type => type }               }
@@ -11,13 +11,13 @@ describe Form::MessageTransformer, '.transform' do
     let(:type) { :blank }
 
     before do
-      Form::MessageTransformer::Aequitas.stub(:new => transformer)
+      Formitas::MessageTransformer::Aequitas.stub(:new => transformer)
     end
 
     it { should be(translation) }
     
-    it 'should call Form::MessageTransformer::Aequitas' do
-      Form::MessageTransformer::Aequitas.should_receive(:new).
+    it 'should call Formitas::MessageTransformer::Aequitas' do
+      Formitas::MessageTransformer::Aequitas.should_receive(:new).
         with(violation).
         and_return(transformer)
       subject
@@ -28,13 +28,13 @@ describe Form::MessageTransformer, '.transform' do
     let(:type) { :length_between }
 
     before do
-      Form::MessageTransformer::Aequitas.stub(:new => transformer)
+      Formitas::MessageTransformer::Aequitas.stub(:new => transformer)
     end
 
     it { should be(translation) }
     
-    it 'should call Form::MessageTransformer::Aequitas' do
-      Form::MessageTransformer::Aequitas.should_receive(:new).
+    it 'should call Formitas::MessageTransformer::Aequitas' do
+      Formitas::MessageTransformer::Aequitas.should_receive(:new).
         with(violation).
         and_return(transformer)
       subject
@@ -45,13 +45,13 @@ describe Form::MessageTransformer, '.transform' do
     let(:type) { :other_type }
 
     before do
-      Form::MessageTransformer.stub(:new => transformer)
+      Formitas::MessageTransformer.stub(:new => transformer)
     end
 
     it { should be(translation) }
     
-    it 'should call Form::MessageTransformer' do
-      Form::MessageTransformer.should_receive(:new).
+    it 'should call Formitas::MessageTransformer' do
+      Formitas::MessageTransformer.should_receive(:new).
         with(violation).
         and_return(transformer)
       subject

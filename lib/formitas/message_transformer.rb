@@ -1,5 +1,5 @@
 #encoding: utf-8
-module Form
+module Formitas
   # Method object for message translation
   class MessageTransformer < Aequitas::MessageTransformer
     include Immutable

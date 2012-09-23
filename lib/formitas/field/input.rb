@@ -1,5 +1,5 @@
 #encoding: utf-8
-module Form
+module Formitas
   class Field
     class Input < Field
 

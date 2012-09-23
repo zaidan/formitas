@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Form::MessageTransformer, '#translation' do
+describe Formitas::MessageTransformer, '#translation' do
   subject                { object.translation              }
   let(:object)           { described_class.new(violation)  }
   let_mock(:translation)

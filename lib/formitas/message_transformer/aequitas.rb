@@ -1,4 +1,4 @@
-module Form
+module Formitas
   class MessageTransformer
     # Method object for message translation when violation type is blank or length_between
     class Aequitas < self

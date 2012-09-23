@@ -1,5 +1,5 @@
 #encoding: utf-8
-module Form
+module Formitas
   module Fieldset
     module InstanceMethods
       include WebHelpers
@@ -156,7 +156,7 @@ module Form
       #   the module or class that is including this module
       #
       # @return [Class|Module]
-      #   returns constant when it can be found under the Form namespace
+      #   returns constant when it can be found under the Formitas namespace
       #   
       # @raise [NameError]
       #   raises NameError otherwise
@@ -164,7 +164,7 @@ module Form
       # @api private
       #
       def const_missing(name)
-        Form.const_get(name) 
+        Formitas.const_get(name) 
       end
     end
 

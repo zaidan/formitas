@@ -2,30 +2,44 @@
 require 'spec_helper'
 
 describe Formitas::Field, '#render' do
-  subject { described_class.new(attributes) }
+  subject        { object.render(tag_name)          }
+  let(:object)   { class_under_test.new(attributes) }
+  let(:tag_name) { :div                             }
 
   let(:attributes) do
     {
-      :name => name,
+      :name     => name,
       :basename => basename,
-      :input => input
+      :input    => input
     }
   end
 
-  let(:name)      { 'field' }
-  let(:basename)  { 'base'  }
-  let_mock(:input)
+  let(:class_under_test) do
+    Class.new(described_class) do
+      def input_tag
+        html_value
+      end
+    end
+  end
 
-  let(:errors){ [error1,error2] }
-    
+  let(:value)     { '<p>Content</p>' }
+  let(:name)      { 'field'   }
+  let(:basename)  { 'base'    }
+  let_mock(:input) do
+    {
+      :input_hash => {name => value}
+    }
+  end
+
   let_mock(:error1)
   let_mock(:error2)
-
   let_mock(:rule1)
   let_mock(:rule2)
+  let(:errors) { [error1,error2] }
+    
 
 
-  let(:html)   { subject.render.split("><").join(">\n<") }
+  let(:html)   { subject.split("><").join(">\n<") }
 
   def compress(lines)
     lines.split("\n").map { |line| line.gsub(/^\s+/,'') }.join("\n")
@@ -33,7 +47,6 @@ describe Formitas::Field, '#render' do
 
   before do
       I18n.stub(:translate => 'Label')
-      subject.stub(:input_tag =>'<p>Content</p>')
   end
 
   context 'when input is not valid' do

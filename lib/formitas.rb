@@ -4,6 +4,7 @@ require 'conformitas'
 require 'aequitas'
 require 'web_helpers'
 require 'immutable'
+require 'abstract_class'
 
 require 'formitas/message_transformer'
 require 'formitas/message_transformer/aequitas'

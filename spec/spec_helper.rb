@@ -10,4 +10,5 @@ require 'rspec/autorun'
 
 RSpec.configure do |config|
   config.extend(LetMockHelper)
+  config.include(HTMLHelper)
 end

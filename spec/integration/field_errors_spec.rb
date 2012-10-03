@@ -1,7 +1,7 @@
 #encoding: utf-8
 require 'spec_helper'
 
-describe Formitas::Field, '#render' do
+describe 'Field rendering with errors' do
   subject        { object.render(tag_name)          }
   let(:object)   { class_under_test.new(attributes) }
   let(:tag_name) { :div                             }
@@ -15,22 +15,29 @@ describe Formitas::Field, '#render' do
   end
 
   let(:class_under_test) do
-    Class.new(described_class) do
+    Class.new(Formitas::Field) do
       def input_tag
         html_value
       end
     end
   end
 
-  let(:value)      { '<p>Content</p>' }
-  let(:error_dump) { '<p>Errors</p>'}
-  let(:name)       { 'field'   }
-  let(:basename)   { 'base'    }
+  let(:value)     { '<p>Content</p>' }
+  let(:name)      { 'field'   }
+  let(:basename)  { 'base'    }
   let_mock(:input) do
     {
       :input_hash => {name => value}
     }
   end
+
+  let_mock(:error1)
+  let_mock(:error2)
+  let_mock(:rule1)
+  let_mock(:rule2)
+  let(:errors) { [error1,error2] }
+    
+
 
   let(:html)   { subject.split("><").join(">\n<") }
 
@@ -39,13 +46,16 @@ describe Formitas::Field, '#render' do
   end
 
   context 'when input is not valid' do
-
-    let_mock(:input_errors)
-    let_mock(:errors)
     
     before do
-      Formitas::Dumper::Errors.stub(:dump => error_dump)
       input.stub(:valid? => false)
+      error1.stub(:rule => rule1) 
+      error2.stub(:rule => rule2)
+      error1.stub(:to_s => 'error text 1')
+      error2.stub(:to_s => 'error text 2')
+      rule1.stub(:violation_type => 'error1')
+      rule2.stub(:violation_type => 'error2')
+      input_errors = mock('input_errors')
       input.stub(:errors => input_errors)
       input_errors.stub(:on => errors)
     end
@@ -56,17 +66,12 @@ describe Formitas::Field, '#render' do
         <div class="input">
           <label for="base_field">Label</label>
           <p>Content</p>
-          <p>Errors</p>
+          <div class="error" id="base_field_error">
+            <p class="error" id="base_field_error_msg_error1">error text 1</p>
+            <p class="error" id="base_field_error_msg_error2">error text 2</p>
+          </div>
         </div>
       HTML
-    end
-    
-    it 'should call Error.dump with errors and base id' do
-      Formitas::Dumper::Errors.should_receive(:dump).
-        with(errors, 'base_field').
-        and_return(error_dump)
-
-      subject
     end
   end
 

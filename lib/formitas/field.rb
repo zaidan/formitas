@@ -138,7 +138,19 @@ module Formitas
     # @api private  
     #
     def error_tag
-      Dumper::Errors.dump(input.errors.on(name), html_id) unless input.valid?
+      Dumper::Errors.dump(input_errors, html_id) unless input.valid?
     end
+    memoize :error_tag
+
+    # Return input errors for field
+    #
+    # @return [Enumerable]
+    #
+    # @api private
+    #
+    def input_errors
+      input.errors.on(name)
+    end
+    memoize :input_errors
   end
 end

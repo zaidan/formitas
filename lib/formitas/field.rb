@@ -126,53 +126,11 @@ module Formitas
       content_tag(:label, label, :for => html_id)
     end
     memoize :label_tag
-    
-    # Test if errors should be displayed
-    #
-    # @return [true]
-    #   if input is not valid and field errors exist
-    # 
-    # @return [false]
-    #   false otherwise
-    # 
-    # @api private  
-    #
-    def display_errors?
-      !input.valid? && field_errors?
-    end
-    memoize :display_errors?
-
-    # Test if field errors exist
-    #
-    # @return [true]
-    #   if field errors exist
-    # 
-    # @return [false]
-    #   false otherwise
-    # 
-    # @api private  
-    #
-    def field_errors?
-      !field_errors.empty?
-    end
-    memoize :field_errors?
-
-    # Return field errors
-    #
-    # @return [Array]
-    #   with field errors
-    # 
-    # @api private  
-    #
-    def field_errors
-      input.errors.on(name)
-    end
-    memoize :field_errors
 
     # Return errors as HTML code
     #
-    # @return [Hash]
-    #   with errors when #display_errors? is true
+    # @return [String]
+    #   when input is not valid
     #
     # @return [nil]
     #   otherwise 
@@ -180,49 +138,7 @@ module Formitas
     # @api private  
     #
     def error_tag
-      if display_errors? 
-        content_tag(
-          :div,
-          error_contents, 
-          {
-            :class => :error, 
-            :id => "#{html_id}_error"
-          }
-        )
-      end
-    end
-    memoize :error_tag
-
-    # Return error contents as HTML code
-    #
-    # @return [String]
-    #   with error content
-    # 
-    # @api private  
-    #
-    def error_contents
-      field_errors.map do |error|
-        content_tag(
-          :p,
-          escape_html(error),
-          {
-            :class => 'error',
-            :id => "#{html_id}_error_msg_#{error_name(error)}"
-          }
-        )
-      end.join('')
-    end
-    memoize :error_contents
-
-    # Return error name for Aequitas rule
-    #
-    # @return [String]
-    #   with error name
-    # 
-    # @api private  
-    #
-    def error_name(error)
-      error.rule.violation_type
+      Dumper::Errors.dump(input.errors.on(name), html_id) unless input.valid?
     end
   end
 end

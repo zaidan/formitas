@@ -5,9 +5,14 @@ require 'aequitas'
 require 'web_helpers'
 require 'immutable'
 require 'abstract_class'
+require 'dumper'
 
 require 'formitas/message_transformer'
 require 'formitas/message_transformer/aequitas'
+
+require 'formitas/dumper'
+require 'formitas/dumper/error'
+require 'formitas/dumper/errors'
 
 require 'formitas/null_input'
 require 'formitas/field'

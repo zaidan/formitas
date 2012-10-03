@@ -53,9 +53,33 @@ module Formitas
     # @api private
     #
     def translate
-      ::I18n.translate(violation.type, options.merge(violation.info))
+      ::I18n.translate(violation_type, options.merge(violation_info))
     end
     memoize :translate
+
+    # Return violation type
+    #
+    # @return [String]
+    # The violation type
+    #
+    # @api private
+    #
+    def violation_type
+      violation.type
+    end
+    memoize :violation_type
+
+    # Return violation info
+    #
+    # @return [Hash]
+    # The violation info
+    #
+    # @api private
+    #
+    def violation_info
+      violation.info
+    end
+    memoize :violation_info
 
     # Options for translation scope
     #

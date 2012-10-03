@@ -8,7 +8,7 @@ begin
   else
     REEK_SRC = ['lib']
     Reek::Rake::Task.new do |task|
-      task.source_files = ['lib/**/*.rb']
+      task.source_files = ['lib/formitas/**/*.rb']
     end
   end
 rescue LoadError

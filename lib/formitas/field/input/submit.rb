@@ -2,6 +2,7 @@
 module Formitas
   class Field
     class Input
+      # Represent a HTML submit field
       class Submit < self
         
       private

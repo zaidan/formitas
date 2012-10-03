@@ -1,6 +1,7 @@
 #encoding: utf-8
 module Formitas
   class Field
+    # Represent a HTML select field
     class Select < Field
       attribute :collection,   Object
       attribute :value_method, Symbol
@@ -9,18 +10,21 @@ module Formitas
       def input_tag
         content_tag(:select,option_html,:id => html_id,:name => html_name)
       end
+      memoize :input_tag
     
     private
 
       def option_html
         option_tags.join("")
       end
+      memoize :option_html
 
       def option_tags
         collection.map do |resource|
           option_tag_for_resource(resource)
         end
       end
+      memoize :option_tags
 
       def option_tag_for_resource(resource)
         value = to_value(resource)

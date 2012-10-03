@@ -6,7 +6,7 @@ begin
   RoodiTask.new do |t|
     t.verbose  = false
     t.config   = File.expand_path('../../../config/roodi.yml', __FILE__)
-    t.patterns = %w[ lib/**/*.rb ]
+    t.patterns = %w[ lib/formitas/**/*.rb ]
   end
 rescue LoadError
   task :roodi do

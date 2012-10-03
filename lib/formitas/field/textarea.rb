@@ -1,6 +1,7 @@
 #encoding: utf-8
 module Formitas
   class Field
+    # Represent a HTML textarea
     class Textarea < Field
       attribute :type,String
 

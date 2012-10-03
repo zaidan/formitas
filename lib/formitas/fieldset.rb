@@ -1,5 +1,6 @@
 #encoding: utf-8
 module Formitas
+  # Represent a HTML fieldset
   module Fieldset
     module InstanceMethods
       include WebHelpers

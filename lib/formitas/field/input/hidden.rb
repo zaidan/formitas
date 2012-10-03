@@ -2,6 +2,7 @@
 module Formitas
   class Field
     class Input
+      # Represent a HTML hidden field
       class Hidden < self
 
     private

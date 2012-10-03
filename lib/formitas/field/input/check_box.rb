@@ -2,6 +2,7 @@
 module Formitas
   class Field
     class Input
+      # Represent a HTML checkbox
       class CheckBox < self
         def input_tag
           hidden_tag + tag(:input,attributes)

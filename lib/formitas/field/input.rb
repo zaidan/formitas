@@ -1,6 +1,7 @@
 #encoding: utf-8
 module Formitas
   class Field
+    # Represent a HTML input field
     class Input < Field
 
       def input_tag

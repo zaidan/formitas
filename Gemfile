@@ -25,15 +25,7 @@ group :metrics do
   gem 'reek',        '~> 1.2.8', :git => 'https://github.com/dkubb/reek.git'
   gem 'roodi',       '~> 2.1.0'
   gem 'yardstick',   '~> 0.6.0'
-
-  platforms :mri_18 do
-    gem 'heckle',    '~> 1.4.3'
-    gem 'json',      '~> 1.7.5'
-    gem 'metric_fu', '~> 2.1.1'
-    gem 'mspec',     '~> 1.5.17'
-    gem 'rcov',      '~> 1.0.0'
-    gem 'ruby2ruby', '=  1.3.1'
-  end
+  gem 'heckle',      '~> 2.0.0.b1'
 
   platforms :rbx do
     gem 'pelusa', :git => 'https://github.com/codegram/pelusa.git'

@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+gemspec
+
 gem 'conformitas',         :git => 'https://github.com/mbj/conformitas.git'
 gem 'aequitas',            :git => 'https://github.com/mbj/aequitas.git'
 gem 'abstract_class',      :git => 'https://github.com/dkubb/abstract_class.git'

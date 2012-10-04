@@ -1,11 +1,11 @@
 #encoding: utf-8
 require 'i18n'
-require 'conformitas'
 require 'aequitas'
 require 'web_helpers'
 require 'immutable'
 require 'abstract_class'
 require 'dumper'
+require 'virtus'
 
 require 'formitas/message_transformer'
 require 'formitas/message_transformer/aequitas'

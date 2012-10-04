@@ -2,7 +2,6 @@ source 'https://rubygems.org'
 
 gemspec
 
-gem 'conformitas',         :git => 'https://github.com/mbj/conformitas.git'
 gem 'aequitas',            :git => 'https://github.com/mbj/aequitas.git'
 gem 'abstract_class',      :git => 'https://github.com/dkubb/abstract_class.git'
 gem 'immutable',           :git => 'https://github.com/dkubb/immutable.git', :branch => :experimental

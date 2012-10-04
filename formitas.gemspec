@@ -20,7 +20,6 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency('immutable',           '~> 0.0.1')
   gem.add_runtime_dependency('abstract_class',      '~> 0.0.1')
   gem.add_runtime_dependency('aequitas',            '~> 0.0.2')
-  gem.add_runtime_dependency('conformitas',         '~> 0.0.0')
   gem.add_runtime_dependency('i18n',                '~> 0.6.1')
   gem.add_runtime_dependency('rack',                '~> 1.4.1')
   gem.add_runtime_dependency('virtus',              '~> 0.5.2')

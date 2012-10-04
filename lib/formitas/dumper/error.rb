@@ -19,6 +19,7 @@ module Formitas
           attributes
         )
       end
+      memoize :dump
 
     private
 
@@ -32,7 +33,7 @@ module Formitas
       # @api private
       #
       def initialize(error, base_id)
-        @object, @base_id = error, base_id
+        @error, @base_id = error, base_id
       end
 
       # Return errors
@@ -41,10 +42,7 @@ module Formitas
       #
       # @api private
       #
-      def error
-        object
-      end
-      memoize :error
+      attr_reader :error
 
       # Return base id
       # 
@@ -52,10 +50,7 @@ module Formitas
       #
       # @api private
       #
-      def base_id
-        @base_id
-      end
-      memoize :base_id
+      attr_reader :base_id
       
       # Return attributes for content tag
       # 
@@ -80,7 +75,6 @@ module Formitas
       def css_class
         :error
       end
-      memoize :css_class
 
       # Return error id
       #
@@ -102,7 +96,6 @@ module Formitas
       def name
         rule.violation_type
       end
-      memoize :name
 
       # Return Aequitas rule
       #
@@ -113,7 +106,6 @@ module Formitas
       def rule
         error.rule
       end
-      memoize :rule
     end
   end
 end

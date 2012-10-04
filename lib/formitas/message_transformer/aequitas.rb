@@ -12,7 +12,6 @@ module Formitas
       def base_scope
         [:aequitas]
       end
-      memoize :base_scope
 
       # Return translation key
       #
@@ -23,7 +22,6 @@ module Formitas
       def key
         :label
       end
-      memoize :key
     
       # Options for translation scope
       #

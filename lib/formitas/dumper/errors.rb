@@ -15,6 +15,7 @@ module Formitas
       def dump 
         error_tag if errors?
       end
+      memoize :dump
 
     private
 
@@ -37,10 +38,7 @@ module Formitas
       #
       # @api private
       #
-      def errors
-        @errors
-      end
-      memoize :errors
+      attr_reader :errors
 
       # Return base id
       # 
@@ -48,10 +46,7 @@ module Formitas
       #
       # @api private
       #
-      def base_id
-        @base_id
-      end
-      memoize :base_id
+      attr_reader :base_id
 
       # Test if errors exist
       #

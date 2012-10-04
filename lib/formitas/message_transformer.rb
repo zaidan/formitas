@@ -67,7 +67,6 @@ module Formitas
     def violation_type
       violation.type
     end
-    memoize :violation_type
 
     # Return violation info
     #
@@ -79,7 +78,6 @@ module Formitas
     def violation_info
       violation.info
     end
-    memoize :violation_info
 
     # Options for translation scope
     #
@@ -102,10 +100,7 @@ module Formitas
     #
     # @api private
     #
-    def violation
-      @violation
-    end
-    memoize :violation
+    attr_reader :violation
 
     # Return violation resource
     #
@@ -116,7 +111,6 @@ module Formitas
     def resource
       violation.resource
     end
-    memoize :resource
 
     # Return model name
     #
@@ -138,7 +132,6 @@ module Formitas
     def attribute_name
       violation.attribute_name
     end
-    memoize :attribute_name
 
     # Return default scope
     #
@@ -168,10 +161,7 @@ module Formitas
     #
     # @api private
     #
-    def base_scope
-      default_scope
-    end
-    memoize :base_scope
+    attr_reader :base_scope
     
     # Return translation key
     #
@@ -182,7 +172,6 @@ module Formitas
     def key
       :name
     end
-    memoize :key
 
     # Return translated attribute
     #

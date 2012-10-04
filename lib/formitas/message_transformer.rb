@@ -160,8 +160,9 @@ module Formitas
     # @return [Array<String>]
     #
     # @api private
-    #
-    attr_reader :base_scope
+    def base_scope
+      default_scope
+    end
     
     # Return translation key
     #

@@ -60,21 +60,11 @@ module Formitas
       #
       def attributes
         {
-          :class => css_class,
-          :id => id 
+          :class => :error,
+          :id => html_id 
         }
       end
       memoize :attributes
-
-      # Return css error class
-      #
-      # @return [String]
-      # 
-      # @api private  
-      #
-      def css_class
-        :error
-      end
 
       # Return error id
       #
@@ -82,10 +72,10 @@ module Formitas
       # 
       # @api private  
       #
-      def id
+      def html_id
         "#{base_id}_error_msg_#{name}"
       end
-      memoize :id
+      memoize :html_id
 
       # Return error name
       #

@@ -1,7 +1,6 @@
 require 'spec_helper'
 
-
-describe Dumper, '.dump' do
+describe Formitas::Dumper, '.dump' do
   subject { class_under_test.dump(dump_subject) }
 
   let(:dump_subject) { mock('Dump Subject', :attribute => dump_result) }

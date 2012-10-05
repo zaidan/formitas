@@ -1,6 +1,6 @@
 module Formitas
   class MessageTransformer
-    # Method object for message translation when violation type is blank or length_between
+    # Message transformer in the aequitas namespace
     class Aequitas < self
     
       # Return base scope

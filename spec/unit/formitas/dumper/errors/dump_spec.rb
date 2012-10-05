@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Formitas::Dumper::Errors, '#dump' do
-  include WebHelpers
+  include Formitas::WebHelpers
   subject      { object.dump                    }
   let(:object) { described_class.new(errors, base_id) }
 

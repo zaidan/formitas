@@ -3,16 +3,21 @@ module Formitas
   class Field
     # Represent a HTML textarea
     class Textarea < Field
-      attribute :type,String
 
+      # Return input html
+      #
+      # @return [String]
+      #
+      # @api private
+      #
       def input_tag
         content_tag(
           :textarea,
           escape_html(html_value),
-          :name => html_name,
-          :id => html_id
+          html_attributes
         )
       end
+      memoize :input_tag
     end
   end
 end

@@ -2,15 +2,22 @@
 require 'spec_helper'
 
 describe Formitas::Field, '#render' do
+  before do
+    pending
+  end
+
   subject        { object.render(tag_name)          }
   let(:object)   { class_under_test.new(attributes) }
   let(:tag_name) { :div                             }
 
+  let_mock(:validator) 
+
   let(:attributes) do
     {
-      :name     => name,
-      :basename => basename,
-      :input    => input
+      :name      => name,
+      :basename  => basename,
+      :validator => validator,
+      :input     => input
     }
   end
 
@@ -19,18 +26,18 @@ describe Formitas::Field, '#render' do
       def input_tag
         html_value
       end
+
+      def html_value
+        '<p>Content</p>'
+      end
     end
   end
 
-  let(:value)      { '<p>Content</p>' }
   let(:error_dump) { '<p>Errors</p>'}
   let(:name)       { 'field'   }
   let(:basename)   { 'base'    }
-  let_mock(:input) do
-    {
-      :input_hash => {name => value}
-    }
-  end
+
+  let_mock(:input)
 
   let(:html)   { subject.split("><").join(">\n<") }
 
@@ -45,8 +52,6 @@ describe Formitas::Field, '#render' do
     
     before do
       Formitas::Dumper::Errors.stub(:dump => error_dump)
-      input.stub(:valid? => false)
-      input.stub(:errors => input_errors)
       input_errors.stub(:on => errors)
     end
 

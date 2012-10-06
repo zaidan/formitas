@@ -4,12 +4,10 @@ module Formitas
     class Input
       # Represent a HTML submit field
       class Submit < self
+
+        TYPE = :submit
         
       private
-        
-        def type
-          :submit
-        end
 
         # Return translated HTML value
         #
@@ -25,22 +23,20 @@ module Formitas
         # Submit fields have no errors
         #
         # @return [nil]
-        #   returns allways nil
+        #   allways nil
         # 
         # @api private  
         #
-        def error_tag
-        end
+        def error_tag; end
         
         # Submit fields have no labels
         #
         # @return [nil]
-        #   returns allways nil
+        #   allways nil
         # 
         # @api private  
         #
-        def label_tag
-        end
+        def label_tag; end
       end
     end
   end

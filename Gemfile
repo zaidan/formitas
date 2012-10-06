@@ -7,9 +7,9 @@ gem 'abstract_class',      :git => 'https://github.com/dkubb/abstract_class.git'
 gem 'immutable',           :git => 'https://github.com/dkubb/immutable.git', :branch => :experimental
 gem 'descendants_tracker', :git => 'https://github.com/dkubb/descendants_tracker.git'
 gem 'equalizer',           :git => 'https://github.com/dkubb/equalizer.git'
+gem 'anima',               :git => 'https://github.com/mbj/anima.git'
 gem 'i18n'
 gem 'rack'
-gem 'virtus'
 
 group :development do
   gem 'rake'

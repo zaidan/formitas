@@ -1,45 +1,53 @@
 #encoding: utf-8
 require 'spec_helper'
 
-describe 'Field rendering with errors' do
+describe 'Field rendering with violations' do
+
+  before do
+    pending
+  end
+
   subject        { object.render(tag_name)          }
   let(:object)   { class_under_test.new(attributes) }
   let(:tag_name) { :div                             }
 
   let(:attributes) do
     {
-      :name     => name,
-      :basename => basename,
-      :input    => input
+      :name      => name,
+      :basename  => basename,
+      :input     => input,
+      :validator => validator
     }
   end
+
+  let_mock(:validator)
 
   let(:class_under_test) do
     Class.new(Formitas::Field) do
-      def input_tag
-        html_value
+      def self.name
+        'TestFormitasField'
       end
+
+      def input_tag
+        '<p>Content</p>'
+      end
+
     end
   end
 
-  let(:value)     { '<p>Content</p>' }
   let(:name)      { 'field'   }
   let(:basename)  { 'base'    }
-  let_mock(:input) do
-    {
-      :input_hash => {name => value}
-    }
-  end
-
+  let_mock(:input)
   let_mock(:error1)
   let_mock(:error2)
   let_mock(:rule1)
   let_mock(:rule2)
-  let(:errors) { [error1,error2] }
+
+  let(:validator) { [error1, error2] }
     
 
 
-  let(:html)   { subject.split("><").join(">\n<") }
+  let(:html)   { subject.split('><').join(">\n<") }
 
   before do
       I18n.stub(:translate => 'Label')
@@ -55,9 +63,8 @@ describe 'Field rendering with errors' do
       error2.stub(:to_s => 'error text 2')
       rule1.stub(:violation_type => 'error1')
       rule2.stub(:violation_type => 'error2')
-      input_errors = mock('input_errors')
-      input.stub(:errors => input_errors)
-      input_errors.stub(:on => errors)
+      input_violations = mock('input_violations')
+      input_violations.stub(:on => validator)
     end
 
 

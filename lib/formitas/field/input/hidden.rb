@@ -5,21 +5,18 @@ module Formitas
       # Represent a HTML hidden field
       class Hidden < self
 
+        TYPE = :hidden
+
     private
-      
-        def type
-          :hidden
-        end
         
         # Hidden fields have no labels
         #
         # @return [nil]
-        #   returns allways nil
+        #   allways 
         # 
         # @api private  
         #
-        def label_tag
-        end
+        def label_tag; end
       end
     end
   end

@@ -1,15 +1,14 @@
 #encoding: utf-8
 module Formitas
-  # Represent a HTML form field
+  # Abstract base class for form fields
   class Field
-    include Virtus::ValueObject, WebHelpers, AbstractClass, Immutable
+    include Anima, WebHelpers, AbstractClass, Immutable
 
-    attribute :name,  Symbol
-    
-    attribute :basename,  Symbol
-    
-    attribute :input, Object, :default => NullInput
-    
+    attribute :name
+    attribute :basename
+    attribute :input
+    attribute :violations
+
     # Return Field as HTML content
     #
     # @param [Symbol] tag_name
@@ -30,8 +29,6 @@ module Formitas
     end
     memoize :render
 
-  private
-
     # Return HTML input tag
     #
     # @return [String]
@@ -40,6 +37,21 @@ module Formitas
     # @api private  
     #
     abstract_method :input_tag
+
+  private
+
+    # Return html attributes
+    #
+    # @return [Hash]
+    #
+    # @api private
+    #
+    def html_attributes
+      {
+        :name  => html_name,
+        :id    => html_id
+      }
+    end
     
     # Return HTML id
     #
@@ -65,6 +77,7 @@ module Formitas
     end
     memoize :html_name
 
+
     # Return HTML value
     #
     # @return [String]
@@ -72,37 +85,8 @@ module Formitas
     # 
     # @api private  
     #
-    def html_value
-      input_hash[input_hash_key]
-    end
-    memoize :html_value
+    abstract_method :html_value
 
-    # Return input hash key
-    #
-    # @return [String]
-    #   with valid hash key if input was found
-    # @return [nil]
-    #   otherwise
-    # 
-    # @api private  
-    #
-    def input_hash_key
-      input_hash.keys.detect { |key| key.to_sym == name.to_sym }
-    end
-    memoize :input_hash_key
-
-    # Return input hash
-    #
-    # @return [Hash]
-    #   input hash
-    # 
-    # @api private  
-    #
-    def input_hash
-      input.input_hash
-    end
-    memoize :input_hash
-    
     # Return localized HTML label
     #
     # @return [String]
@@ -138,19 +122,8 @@ module Formitas
     # @api private  
     #
     def error_tag
-      Dumper::Errors.dump(input_errors, html_id) unless input.valid?
+      Dumper::Errors.dump(violations, html_id) unless input.valid?
     end
     memoize :error_tag
-
-    # Return input errors for field
-    #
-    # @return [Enumerable]
-    #
-    # @api private
-    #
-    def input_errors
-      input.errors.on(name)
-    end
-    memoize :input_errors
   end
 end

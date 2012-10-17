@@ -4,24 +4,6 @@ module Formitas
   class Renderer
     include Adamantium, WebHelpers
 
-    # Return rendered object
-    #
-    # @return [Object]
-    #
-    # @api private
-    #
-    attr_reader :object
-
-    # Initialize object
-    #
-    # @param [Object] object
-    #
-    # @api private
-    #
-    def initialize(object)
-      @object = object 
-    end
-
     # Define delegators
     #
     # @param [Symbol] *names
@@ -35,6 +17,7 @@ module Formitas
         delegate_method(name)
       end
     end
+    private_class_method :delegate
 
     # Define delegator
     #
@@ -50,6 +33,43 @@ module Formitas
           @object.#{name}
         end
       RUBY
+    end
+    private_class_method :delegate_method
+
+    delegate :error?
+
+    # Return rendered object
+    #
+    # @return [Object]
+    #
+    # @api private
+    #
+    attr_reader :object
+
+    # Helper method that yields on error
+    #
+    # @yield 
+    #   if form has error
+    #
+    # @return [self]
+    #
+    # @api private
+    #
+    def on_error
+      yield if error?
+      self
+    end
+
+  private
+
+    # Initialize object
+    #
+    # @param [Object] object
+    #
+    # @api private
+    #
+    def initialize(object)
+      @object = object 
     end
   end
 end

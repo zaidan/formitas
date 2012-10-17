@@ -54,20 +54,6 @@ module Formitas
         end
         memoize :fields
 
-        # Yield on error
-        #
-        # @yield 
-        #   if form has error
-        #
-        # @return [self]
-        #
-        # @api private
-        #
-        def on_error
-          yield if error?
-          self
-        end
-
         # Yield field renderer
         #
         # @yield [Field]

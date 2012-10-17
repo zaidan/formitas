@@ -30,12 +30,16 @@ module Formitas
       end
       memoize :render
 
-      def inner_html
+      def list_items_html
         list_items = []
         violations.each do |violation|
           list_items << content_tag(:li, violation.render)
         end
-        content_tag(:ul, list_items.join(''))
+        list_items.join('')
+      end
+
+      def inner_html
+        content_tag(:ul, list_items_html)
       end
       memoize :inner_html
     end

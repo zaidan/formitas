@@ -5,27 +5,6 @@ module Formitas
       attr_reader :field
       private :field
 
-      # Return detailed scope
-      #
-      # @return [Array]
-      #
-      # @api private
-      #
-      def detailed_scope
-        [field.context_name, field_name, type]
-      end
-      memoize :detailed_scope
-
-      # Return general scope
-      #
-      # @return [Array]
-      #
-      # @api private
-      #
-      def general_scope
-        [:aequitas, type]
-      end
-
       delegate :type
 
       def field_name
@@ -58,14 +37,9 @@ module Formitas
       # @api private
       #
       def message
-        lookups = [
-          detailed_scope.join('.'),
-          general_scope.join('.')
-        ]
-
         string = Formitas.translate(
           lookups, 
-          :attribute => human_attribute_name,
+          :attribute => human_attribute_name
         )
 
         if string.equal?(Undefined) 
@@ -78,6 +52,19 @@ module Formitas
 
 
     private
+
+      # Return lookups
+      #
+      # @return [Enumerable<Object>]
+      #
+      # @api private
+      #
+      def lookups
+        [
+          [field.context_name, field_name, type].join('.'),
+          [:aequitas, type].join('.')
+        ]
+      end
 
       # Initialize object
       #

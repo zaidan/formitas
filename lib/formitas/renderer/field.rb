@@ -125,10 +125,30 @@ module Formitas
       end
       memoize :errors_html
 
+      # Return raw value if any
+      #
+      # @return [Object]
+      #   if value is present
+      #
+      # @return [Formitas::Undefined]
+      #   otherwise
+      #
+      # @api private
+      #
       def value
         context.value(name)
       end
 
+      # Test if field has error
+      #
+      # @return [true]
+      #   if field has error
+      #
+      # @return [false]
+      #   otherwise
+      #
+      # @api private
+      #
       def error?
         !violations.empty?
       end
@@ -156,10 +176,16 @@ module Formitas
 
         def options_html
           collection.map do |name|
-            attributes = { :value => name }
-            attributes[:selected] = :selected if name == value
-            content_tag(:option, escape_html(name), attributes)
+            option_html(name)
           end.join('')
+        end
+
+      private
+
+        def option_html(name)
+          attributes = { :value => name }
+          attributes[:selected] = :selected if name == value
+          content_tag(:option, escape_html(name), attributes)
         end
       end
 

@@ -26,7 +26,7 @@ module Formitas
         # @api private
         #
         def inner_html
-          fields.map(&:render).join('')
+          fields.map { |field| field.render }.join('')
         end
         memoize :inner_html
 

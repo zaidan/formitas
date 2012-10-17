@@ -32,12 +32,24 @@ module Formitas
     #
     def self.delegate(*names)
       names.each do |name|
-        class_eval(<<-RUBY, __FILE__, __LINE__+1)
-          def #{name}
-            @object.#{name}
-          end
-        RUBY
+        delegate_method(name)
       end
+    end
+
+    # Define delegator
+    #
+    # @param [Symbol] name
+    #
+    # @return [self]
+    #
+    # @api private
+    #
+    def self.delegate_method(name)
+      class_eval(<<-RUBY, __FILE__, __LINE__+1)
+        def #{name}
+          @object.#{name}
+        end
+      RUBY
     end
   end
 end

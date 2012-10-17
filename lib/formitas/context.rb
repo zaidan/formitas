@@ -13,19 +13,29 @@ module Formitas
       values.get(name)
     end
 
-    def error?
-      !validator.valid?
+    # Return if context is in a valid state
+    #
+    # @return [true]
+    #   if valid
+    #
+    # @return [false]
+    #   otherwise
+    #
+    # @api private
+    #
+    def valid?
+      validator.valid?
     end
 
-    def violations
-      validator.violations
-    end
-
+    # Return mutated context
+    #
+    # @api private
+    #
     def update(attributes)
       self.class.new(self.attributes.merge(attributes))
     end
 
-    # A form body without an action (subform)
+    # A form body without an action (nested form)
     class Body < self
     end
 

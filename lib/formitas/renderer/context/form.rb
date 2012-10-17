@@ -99,7 +99,7 @@ module Formitas
         # @api private
         #
         def violations(name)
-          object.violations.on(name)
+          object.validator.violations.on(name)
         end
       end
     end

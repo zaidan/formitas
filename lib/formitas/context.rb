@@ -1,5 +1,6 @@
 module Formitas
 
+  # Context of a named form element with fields
   class Context
     include Anima, Adamantium
 
@@ -24,9 +25,11 @@ module Formitas
       self.class.new(self.attributes.merge(attributes))
     end
 
+    # A form body without an action (subform)
     class Body < self
     end
 
+    # A form context with action (root form)
     class Form < self
       include Anima, Adamantium
 

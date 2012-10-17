@@ -2,7 +2,7 @@ module Formitas
 
   # Abstract base class for renderers
   class Renderer
-    include Adamantium, WebHelpers
+    include Adamantium, WebHelpers, AbstractClass
 
     # Define delegators
     #
@@ -36,7 +36,7 @@ module Formitas
     end
     private_class_method :delegate_method
 
-    delegate :error?
+    abstract_method :valid?
 
     # Return rendered object
     #
@@ -56,7 +56,7 @@ module Formitas
     # @api private
     #
     def on_error
-      yield if error?
+      yield unless valid?
       self
     end
 

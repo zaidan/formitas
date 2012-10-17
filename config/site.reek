@@ -10,7 +10,7 @@ LargeClass:
   max_methods: 10
   enabled: true
   exclude: 
-    - Formitas::MessageTransformer
+    - Formitas::Renderer::Field # 12 methods TODO: fix this
   max_instance_variables: 3
 UncommunicativeMethodName:
   accept: []

@@ -54,14 +54,6 @@ module Formitas
         end
         memoize :fields
 
-        # Yield field renderer
-        #
-        # @yield [Field]
-        #
-        def field(name)
-          yield Field.new(self, object.fields.get(name))
-        end
-
         # Return field renderer
         #
         # @param [Symbol] name

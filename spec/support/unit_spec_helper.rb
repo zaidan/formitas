@@ -1,7 +1,9 @@
+# Experiment on how to dedup unit specs in dm-2/dkubb style
+
 module Kernel
   def unit_spec(&block)
     file = caller(1).first.split(':').first
-    parts = file.split("/spec/unit/").last.split('/')
+    parts = file.split('/spec/unit/').last.split('/')
     match = parts.last.match(/\A(.*)_spec.rb\Z/)
     match || raise
     parts = parts[0..-2]
@@ -17,6 +19,11 @@ module Kernel
 
     delim = singleton ? '.' : '#'
     method_name = match[1]
+
+    method_name = method_name.gsub(/_bang\Z/,'!')
+    method_name = method_name.gsub(/_predicate\Z/,'?')
+
+
     describe constant, "#{delim}#{method_name}" do
       def self.method_args(&block)
         let(:method_args, &block)
@@ -51,11 +58,15 @@ module Kernel
         it_should_behave_like('an idempotent method')
       end
 
+      def class_under_test
+        described_class
+      end
+
       if singleton
-        object { described_class }
+        object { class_under_test }
       else
         object_args { [] }
-        object      { described_class.new(*object_args) }
+        object      { class_under_test.new(*object_args) }
       end
 
       method_args { [] }

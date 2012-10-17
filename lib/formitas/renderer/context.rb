@@ -5,6 +5,7 @@ module Formitas
     class Context < self
 
       delegate :name
+      delegate :valid?
 
       def value(name)
         object.value(name)

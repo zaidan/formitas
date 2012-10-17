@@ -1,18 +1,21 @@
 require 'spec_helper'
 
 unit_spec do
-  object_args { [context] }
+  let(:class_under_test) do 
+    is_valid = self.is_valid
+    Class.new(described_class) do
+      define_method(:valid?) { is_valid }
+    end
+  end
+
+  object_args { [mock] }
 
   subject { object.on_error { yields << :yield } }
 
   let(:yields) { [] }
 
-  let(:context) do
-    mock('Context', :error? => has_error)
-  end
-
-  context 'when object has error' do
-    let(:has_error) { true }
+  context 'when object is NOT valid' do
+    let(:is_valid) { false }
 
     it 'should yield' do
       subject
@@ -22,8 +25,8 @@ unit_spec do
     command_method
   end
 
-  context 'when object NOT has error' do
-    let(:has_error) { false }
+  context 'when object is valid' do
+    let(:is_valid) { true }
 
     it 'should yield' do
       subject

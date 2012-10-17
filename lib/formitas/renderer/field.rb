@@ -5,24 +5,34 @@ module Formitas
     class Field < self
       include AbstractClass
 
+      # Build field renderer
+      #
+      # @param [Field] field
+      # @param [Context] context
+      #
+      # @return [Renderer]
+      #
+      # @api private
+      #
       def self.build(field, context)
         field.renderer.new(field, context)
       end
 
-      attr_reader :context
-      delegate :name
-
-      # Initialize object
+      # Return rendering context
       #
-      # @param [Field] object
-      # @param [Context] context
-      # 
+      # @return [Renderer::Context]
+      #
       # @api private
       #
-      def initialize(object, context)
-        super(object)
-        @context = context
-      end
+      attr_reader :context
+
+      # Return name of field
+      #
+      # @return [Symbol]
+      #
+      # @api private
+      #
+      delegate :name
 
       # Return context namee
       #
@@ -34,17 +44,6 @@ module Formitas
         context.name
       end
 
-      # Return label scope
-      #
-      # @return [Array]
-      #
-      # @api private
-      #
-      def label_scope
-        [context_name, :label]
-      end
-      memoize :label_scope
-
       # Return label text
       #
       # @return [String]
@@ -52,10 +51,17 @@ module Formitas
       # @api private
       #
       def label_text
-        I18n.translate(name, :scope => label_scope, :default => Inflector.humanize(name))
+        name = self.name
+        I18n.translate(name, :scope => [context_name, :label], :default => Inflector.humanize(name))
       end
       memoize :label_text
 
+      # Return inner html
+      #
+      # @return [String]
+      #
+      # @api private
+      #
       def inner_html
         [
           label_html,
@@ -64,10 +70,16 @@ module Formitas
         ].join('')
       end
 
+      # Return css classes
+      #
+      # @return [String]
+      #
+      # @api private
+      #
       def css_classes
-        classes = %w(input)
-        classes << 'error' unless errors_html.empty?
-        classes.join(' ')
+        css = 'input'
+        css += ' error' unless valid?
+        css
       end
       memoize :css_classes
 
@@ -80,6 +92,18 @@ module Formitas
       def render
         content_tag(:div, inner_html, :class => css_classes)
       end
+      memoize :render
+
+      # Return label html
+      #
+      # @return [String]
+      #
+      # @api private
+      #
+      def label_html
+        content_tag(:label, label_text, :for => html_id)
+      end
+      memoize :label_html
 
       # Return unique html id 
       #
@@ -103,16 +127,6 @@ module Formitas
       end
       memoize :input_name
 
-      # Return label html
-      #
-      # @return [String]
-      #
-      # @api private
-      #
-      def label_html
-        content_tag(:label, label_text, :for => html_id)
-      end
-      memoize :label_html
 
       abstract_method :input_html
 
@@ -138,20 +152,32 @@ module Formitas
       def value
         context.value(name)
       end
+      memoize :value
 
-      # Test if field has error
+      # Test if input is valid for field
       #
       # @return [true]
-      #   if field has error
+      #   if valid
       #
       # @return [false]
       #   otherwise
       #
       # @api private
       #
-      def error?
-        !violations.empty?
+      def valid?
+        field_violations.empty?
       end
+
+      # Return field violations
+      #
+      # @return [Enumerable<Violation>]
+      #
+      # @api private
+      #
+      def field_violations
+        context.violations(name)
+      end
+      memoize :field_violations
 
       # Return violations renderer
       #
@@ -160,13 +186,28 @@ module Formitas
       # @api private
       #
       def violations
-        ViolationSet.new(context.violations(name), self)
+        ViolationSet.new(field_violations, self)
       end
       memoize :violations
+
+    private
+
+      # Initialize object
+      #
+      # @param [Field] object
+      # @param [Context] context
+      # 
+      # @api private
+      #
+      def initialize(object, context)
+        super(object)
+        @context = context
+      end
     end
 
     class Field
 
+      # Renderer for <select>
       class Select < self
         delegate :collection
 
@@ -189,6 +230,7 @@ module Formitas
         end
       end
 
+      # Renderer for <input type="checkbox">
       class Checkbox < self
       end
 
@@ -196,6 +238,7 @@ module Formitas
       class Input < self
 
         def input_value
+          value = self.value
           value_or_undefined = value
           value_or_undefined.equal?(Undefined) ? '' : value
         end

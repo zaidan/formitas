@@ -66,6 +66,7 @@ module Formitas
     Valid = Class.new do
       include Adamantium
       def inspect; self.class.name; end
+      def valid?; true; end
       def violations; EmptyViolationSet; end
       def self.name; 'Formitas::Validator::Valid'; end
     end.new

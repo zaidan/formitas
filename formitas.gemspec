@@ -17,11 +17,12 @@ Gem::Specification.new do |gem|
   gem.extra_rdoc_files = %w[TODO]
   
   gem.add_runtime_dependency('descendants_tracker', '~> 0.0.1')
-  gem.add_runtime_dependency('immutable',           '~> 0.0.1')
+  gem.add_runtime_dependency('adamantium',          '~> 0.0.1')
   gem.add_runtime_dependency('abstract_class',      '~> 0.0.1')
   gem.add_runtime_dependency('aequitas',            '~> 0.0.2')
   gem.add_runtime_dependency('i18n',                '~> 0.6.1')
   gem.add_runtime_dependency('rack',                '~> 1.4.1')
   gem.add_runtime_dependency('virtus',              '~> 0.5.2')
+  gem.add_runtime_dependency('inflector',           '~> 0.0.1')
 
 end

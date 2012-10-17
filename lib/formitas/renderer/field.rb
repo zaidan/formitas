@@ -1,14 +1,20 @@
 module Formitas
   class Renderer
 
+    # Abstract class for field renderers
     class Field < self
-      attr_reader :context
+      include AbstractClass
 
+      def self.build(field, context)
+        field.renderer.new(field, context)
+      end
+
+      attr_reader :context
       delegate :name
 
-      def initialize(context, object)
-        @context = context
+      def initialize(object, context)
         super(object)
+        @context = context
       end
 
       # Return context namee
@@ -70,15 +76,16 @@ module Formitas
       end
       memoize :label_html
 
-      def input_html
-        tag(:input, :id => html_id, :type => :text, :name => input_name, :value => '')
-      end
-      memoize :input_html
+      abstract_method :input_html
 
       def errors_html
         violations.render
       end
       memoize :errors_html
+
+      def value
+        context.value(name)
+      end
 
       # Return violations renderer
       #
@@ -90,6 +97,53 @@ module Formitas
         ViolationSet.new(context.violations(name), self)
       end
       memoize :violations
+    end
+
+    class Field
+
+      class Select < self
+        delegate :collection
+
+        def input_html
+          content_tag(:select, options_html, :id => html_id, :name => input_name)
+        end
+
+        def options_html
+          collection.map do |name|
+            attributes = { :value => name }
+            attributes[:selected] = :selected if name == value
+            content_tag(:option, escape_html(name), attributes)
+          end.join('')
+        end
+      end
+
+      class Checkbox < self
+      end
+
+      # Abstract class for <input> tag fields
+      class Input < self
+
+        def input_value
+          value_or_undefined = value
+          value_or_undefined == Values::Undefined ? '' : value
+        end
+        memoize :input_value
+
+        abstract_method :type
+
+        def type
+          self.class::TYPE
+        end
+
+        def input_html
+          tag(:input, :id => html_id, :type => type, :name => input_name, :value => input_value)
+        end
+        memoize :input_html
+
+        class Text < self
+          TYPE = :text
+        end
+      end
     end
   end
 end

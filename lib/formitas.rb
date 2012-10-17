@@ -3,13 +3,14 @@ require 'inflector'
 require 'anima'
 require 'rack'
 require 'i18n'
+require 'aequitas'
 
 module Formitas
 
+  Undefined = Object.new.freeze
+
   class Values
     include AbstractClass
-
-    Undefined = Object.new.freeze
 
     Empty = Class.new(self) do
       def get(name)
@@ -27,6 +28,32 @@ module Formitas
       end
     end
   end
+
+  # Return translation
+  #
+  # I18n interface does not support :default on multi lookups so we do 
+  # it externally
+  #
+  # @param [Array] lookups
+  # @param [Hash] options
+  #
+  # @return [String]
+  #   if translation could be found
+  #
+  # @return [Undefined] 
+  #   otherwise
+  #
+  # @api private
+  #
+  def self.translate(lookups, options={})
+    lookups.each do |lookup|
+      result = I18n.translate(lookup, options.merge(:default => Undefined))
+      return result unless result.equal?(Undefined)
+    end
+
+    Undefined
+  end
+
 
   module Validator
     EmptyViolationSet = Class.new do

@@ -12,6 +12,13 @@ module Formitas
       attr_reader :context
       delegate :name
 
+      # Initialize object
+      #
+      # @param [Field] object
+      # @param [Context] context
+      # 
+      # @api private
+      #
       def initialize(object, context)
         super(object)
         @context = context
@@ -57,20 +64,51 @@ module Formitas
         ].join('')
       end
 
+      def css_classes
+        classes = %w(input)
+        classes << 'error' unless errors_html.empty?
+        classes.join(' ')
+      end
+      memoize :css_classes
+
+      # Return rendered html
+      #
+      # @return [String]
+      #
+      # @api private
+      #
       def render
-        content_tag(:div, inner_html, :class => :input)
+        content_tag(:div, inner_html, :class => css_classes)
       end
 
+      # Return unique html id 
+      #
+      # @return [String]
+      #
+      # @api private
+      #
       def html_id
         "#{context.html_id}_#{name}"
       end
       memoize :html_id
 
+      # Return input name
+      #
+      # @return [String]
+      # 
+      # @api private
+      #
       def input_name
         context.input_name(name)
       end
       memoize :input_name
 
+      # Return label html
+      #
+      # @return [String]
+      #
+      # @api private
+      #
       def label_html
         content_tag(:label, label_text, :for => html_id)
       end
@@ -78,6 +116,10 @@ module Formitas
 
       abstract_method :input_html
 
+      # Return errors html
+      #
+      # @api private
+      #
       def errors_html
         violations.render
       end
@@ -85,6 +127,10 @@ module Formitas
 
       def value
         context.value(name)
+      end
+
+      def error?
+        !violations.empty?
       end
 
       # Return violations renderer
@@ -125,11 +171,9 @@ module Formitas
 
         def input_value
           value_or_undefined = value
-          value_or_undefined == Values::Undefined ? '' : value
+          value_or_undefined.equal?(Undefined) ? '' : value
         end
         memoize :input_value
-
-        abstract_method :type
 
         def type
           self.class::TYPE

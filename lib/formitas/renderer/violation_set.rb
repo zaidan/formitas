@@ -10,6 +10,10 @@ module Formitas
         @field = field
       end
 
+      def empty?
+        !violations.empty?
+      end
+
       def violations
         object.map do |violation|
           Violation.new(violation, field)
@@ -21,7 +25,7 @@ module Formitas
         if violations.empty?
           ''
         else
-          content_tag(:div, inner_html, :class => :error_set)
+          content_tag(:div, inner_html, :class => :'error-messages')
         end
       end
       memoize :render
@@ -29,7 +33,7 @@ module Formitas
       def inner_html
         list_items = []
         violations.each do |violation|
-          content_tag(:li, violation.render)
+          list_items << content_tag(:li, violation.render)
         end
         content_tag(:ul, list_items.join(''))
       end

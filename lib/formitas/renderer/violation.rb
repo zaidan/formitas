@@ -38,7 +38,6 @@ module Formitas
       #
       def human_attribute_name
         field.label_text
-        I18n.translate(field_name, :scope => field.label_scope)
       end
 
       # Return violation html
@@ -59,12 +58,24 @@ module Formitas
       # @api private
       #
       def message
-        lookups = []
-        lookups << detailed_scope.join('.')
-        lookups << general_scope.join('.')
-        I18n.translate(lookups, :attribute => human_attribute_name)
+        lookups = [
+          detailed_scope.join('.'),
+          general_scope.join('.')
+        ]
+
+        string = Formitas.translate(
+          lookups, 
+          :attribute => human_attribute_name,
+        )
+
+        if string.equal?(Undefined) 
+          "#{human_attribute_name}: #{Inflector.humanize(type)}"
+        else
+          string
+        end
       end
       memoize :message
+
 
     private
 

@@ -3,9 +3,6 @@ module Formitas
     # Renderer for (aequitas) violations
     class Violation < self
 
-      attr_reader :field
-      private :field
-
       delegate :type
 
       # Return field name
@@ -15,7 +12,7 @@ module Formitas
       # @api private
       #
       def field_name
-        field.name
+        context.name
       end
 
       # Return human attribute name
@@ -23,7 +20,7 @@ module Formitas
       # @api private
       #
       def human_attribute_name
-        field.label_text
+        context.label_text
       end
 
       # Return violation html
@@ -76,24 +73,11 @@ module Formitas
       def lookups
         type = self.type
         [
-          [field.context_name, field_name, type].join('.'),
+          [context.context_name, field_name, type].join('.'),
           [:aequitas, type].join('.')
         ]
       end
 
-      # Initialize object
-      #
-      # @param [Violation] object
-      # @param [Renderer::Field] field
-      #
-      # @return [undefined]
-      #
-      # @api private
-      #
-      def initialize(object, field)
-        @field = field
-        super(object)
-      end
     end
   end
 end

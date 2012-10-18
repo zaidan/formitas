@@ -5,13 +5,6 @@ module Formitas
       # Abstract class for <input> tag fields
       class Input < self
 
-        def input_value
-          value = self.value
-          value_or_undefined = value
-          value_or_undefined.equal?(Undefined) ? '' : value
-        end
-        memoize :input_value
-
         def type
           self.class::TYPE
         end
@@ -25,7 +18,7 @@ module Formitas
           { 
             :id => html_id, 
             :type => type, 
-            :name => input_name
+            :name => html_name
           }
         end
 
@@ -42,7 +35,7 @@ module Formitas
           TYPE = :text
 
           def extra_input_attributes
-            { :value => input_value }
+            { :value => html_value }
           end
         end
 
@@ -58,13 +51,17 @@ module Formitas
           def hidden_html
             HTML.input(
               :type => :hidden,
-              :name => input_name,
+              :name => html_name,
               :value => '0'
             )
           end
 
+          def boolean
+            !!domain_value
+          end
+
           def checked_value
-            value ? 'checked' : ''
+            boolean ? 'checked' : ''
           end
 
           def extra_input_attributes

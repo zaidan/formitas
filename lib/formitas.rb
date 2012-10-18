@@ -13,9 +13,7 @@ module Formitas
     include AbstractClass
 
     Empty = Class.new(self) do
-      def get(name)
-        Undefined
-      end
+      def get(name); nil; end
     end.new.freeze
 
     class Proxy
@@ -98,13 +96,19 @@ module Formitas
 end
 
 require 'formitas/html'
-require 'formitas/context'
 require 'formitas/renderer'
+require 'formitas/renderer/label'
 require 'formitas/renderer/context'
+require 'formitas/renderer/collection'
 require 'formitas/renderer/context/form'
+require 'formitas/renderer/option'
 require 'formitas/renderer/field'
 require 'formitas/renderer/field/input'
+require 'formitas/renderer/field/select'
 require 'formitas/renderer/violation'
 require 'formitas/renderer/violation_set'
 
 require 'formitas/field'
+require 'formitas/context'
+require 'formitas/collection'
+require 'formitas/option'

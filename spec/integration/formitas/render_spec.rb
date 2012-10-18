@@ -16,18 +16,45 @@ describe Formitas, 'rendering' do
     )
   end
 
+  let(:membership_a) do 
+    Class.new do 
+      def self.name; 'MembershipA'; end
+    end
+  end
+
+  let(:membership_b) do 
+    Class.new do 
+      def self.name; 'MembershipB'; end 
+    end
+  end
+
   let(:model) do
     Class.new do
       include Virtus
-      attribute :surname, String
-      attribute :name, String
+      attribute :membership,        Object
+      attribute :surname,           String
+      attribute :name,              String
+      attribute :terms_of_service,  Virtus::Attribute::Boolean
     end
   end
 
   let(:fields) do
     [
-      Formitas::Field::Select.build(:surname, :collection => %w(Mr Mrs)),
-      Formitas::Field::Input::Text.build(:name)
+      Formitas::Field::Select.build(
+        :surname, 
+        :collection => Formitas::Collection::String.new(
+          :strings => %w(Mr Mrs)
+        )
+      ),
+      Formitas::Field::String.build(:name),
+     #Formitas::Field::Select.build(
+     #  :membership,
+     #  :collection => Formitas::Collection::DomainMap.new(
+     #    'membership-a' => membership_a,
+     #    'membership-b' => membership_b
+     #  )
+     #),
+      Formitas::Field::Boolean.build(:terms_of_service)
     ]
   end
 
@@ -55,6 +82,11 @@ describe Formitas, 'rendering' do
             <label for="person_name">Name</label>
             <input id="person_name" type="text" name="person[name]" value=""/>
           </div>
+          <div class="input">
+            <label for="person_terms_of_service">Terms of service</label>
+            <input type="hidden" name="person[terms_of_service]" value="0"/>
+            <input id="person_terms_of_service" type="checkbox" name="person[terms_of_service]" value="1" checked=""/>
+          </div>
         </form>
       HTML
     end
@@ -62,10 +94,15 @@ describe Formitas, 'rendering' do
   end
 
   context 'with input' do
+
+    let(:resource) do
+      model.new(:surname => 'Mr', :name => 'Markus Schirp', :terms_of_service => true)
+    end
+
     let(:attributes) do
       {
         :name      => :person,
-        :values    => Formitas::Values::Proxy.new(model.new(:surname => 'Mr', :name => 'Markus Schirp')),
+        :values    => Formitas::Values::Proxy.new(resource),
         :validator => Formitas::Validator::Valid,
         :fields    => Formitas::FieldSet.new(fields)
       }
@@ -85,6 +122,11 @@ describe Formitas, 'rendering' do
             <label for="person_name">Name</label>
             <input id="person_name" type="text" name="person[name]" value="Markus Schirp"/>
           </div>
+          <div class="input">
+            <label for="person_terms_of_service">Terms of service</label>
+            <input type="hidden" name="person[terms_of_service]" value="0"/>
+            <input id="person_terms_of_service" type="checkbox" name="person[terms_of_service]" value="1" checked="checked"/>
+          </div>
         </form>
       HTML
     end
@@ -97,6 +139,7 @@ describe Formitas, 'rendering' do
         include Aequitas::Validator
         validates_presence_of :surname
         validates_presence_of :name
+        validates_acceptance_of :terms_of_service
       end
     end
 
@@ -131,6 +174,11 @@ describe Formitas, 'rendering' do
           <div class="input">
             <label for="person_name">Name</label>
             <input id="person_name" type="text" name="person[name]" value="Markus Schirp"/>
+          </div>
+          <div class="input">
+            <label for="person_terms_of_service">Terms of service</label>
+            <input type="hidden" name="person[terms_of_service]" value="0"/>
+            <input id="person_terms_of_service" type="checkbox" name="person[terms_of_service]" value="1" checked=""/>
           </div>
         </form>
       HTML

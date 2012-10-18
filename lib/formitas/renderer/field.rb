@@ -122,10 +122,10 @@ module Formitas
       # 
       # @api private
       #
-      def input_name
-        context.input_name(name)
+      def html_name
+        context.html_name(name)
       end
-      memoize :input_name
+      memoize :html_name
 
 
       abstract_method :input_html
@@ -139,9 +139,9 @@ module Formitas
       end
       memoize :errors_html
 
-      # Return raw value if any
+      # Return html input value if any
       #
-      # @return [Object]
+      # @return [String]
       #   if value is present
       #
       # @return [Formitas::Undefined]
@@ -149,10 +149,22 @@ module Formitas
       #
       # @api private
       #
-      def value
-        context.value(name)
+      def html_value
+        context.html_value(name)
       end
-      memoize :value
+      memoize :html_value
+
+      # Return domain value if any
+      #
+      # @return [Object]
+      #   if value is present
+      #
+      # @api private
+      #
+      def domain_value
+        context.domain_value(name)
+      end
+      memoize :domain_value
 
       # Test if input is valid for field
       #
@@ -189,47 +201,6 @@ module Formitas
         ViolationSet.new(field_violations, self)
       end
       memoize :violations
-
-    private
-
-      # Initialize object
-      #
-      # @param [Field] object
-      # @param [Context] context
-      # 
-      # @api private
-      #
-      def initialize(object, context)
-        super(object)
-        @context = context
-      end
-    end
-
-    class Field
-
-      # Renderer for <select>
-      class Select < self
-        delegate :collection
-
-        def input_html
-          HTML.content_tag(:select, options_html, :id => html_id, :name => input_name)
-        end
-
-        def options_html
-          contents = collection.map do |name|
-            option_html(name)
-          end
-          HTML.join(contents)
-        end
-
-      private
-
-        def option_html(name)
-          attributes = { :value => name }
-          attributes[:selected] = :selected if name == value
-          HTML.content_tag(:option, HTML.escape(name), attributes)
-        end
-      end
 
     end
   end

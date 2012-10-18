@@ -78,7 +78,7 @@ module Formitas
           field_renderer(name).render
         end
 
-        # Return input name
+        # Return html name
         #
         # @param [String] name
         #
@@ -86,7 +86,7 @@ module Formitas
         #
         # @api private
         #
-        def input_name(name)
+        def html_name(name)
           "#{self.name}[#{name}]"
         end
 

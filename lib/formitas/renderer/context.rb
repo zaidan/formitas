@@ -6,11 +6,8 @@ module Formitas
 
       delegate :name
       delegate :valid?
-
-      def value(name)
-        object.value(name)
-      end
-
+      delegate :domain_value
+      delegate :html_value
     end
   end
 end

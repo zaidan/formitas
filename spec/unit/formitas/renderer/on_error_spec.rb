@@ -8,7 +8,7 @@ unit_spec do
     end
   end
 
-  object_args { [mock] }
+  object_args { [mock,mock] }
 
   subject { object.on_error { yields << :yield } }
 

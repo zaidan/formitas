@@ -6,16 +6,13 @@ begin
   require 'yaml'
 
   config = YAML.load_file(File.expand_path('../../../config/yardstick.yml', __FILE__))
-  path = config.fetch('path', 'lib/**/*.rb')
+
   # yardstick_measure task
-  Yardstick::Rake::Measurement.new do |measurement|
-    measurement.path = path 
-  end
+  Yardstick::Rake::Measurement.new
 
   # verify_measurements task
   Yardstick::Rake::Verify.new do |verify|
     verify.threshold = config.fetch('threshold')
-    verify.path = path
   end
 rescue LoadError
   %w[ yardstick_measure verify_measurements ].each do |name|

@@ -18,7 +18,7 @@ module Formitas
     attribute :renderer, DefaultRenderer
 
     def self.default_renderer
-      self::RENDERER
+      self::DEFAULT_RENDERER
     end
 
     def self.build(name, options = {})
@@ -26,24 +26,22 @@ module Formitas
     end
 
     # Abstract base class for <input> fields
-    class Input < self
-      # Abstract base class for <input type="text"> fields
-      class Text < self
-        RENDERER = Renderer::Field::Input::Text
-      end
+    class String < self
+      DEFAULT_RENDERER = Renderer::Field::Input::Text
 
-      # Class for <input type="checkbox> fields
-      class Checkbox < self
-        RENDERER = Renderer::Field::Input::Checkbox
+      def html_value(object)
+        object.to_s
       end
     end
 
-    # Class for <select> fields
+    class Boolean < self
+      DEFAULT_RENDERER = Renderer::Field::Input::Checkbox
+    end
+
     class Select < self
-      RENDERER = Renderer::Field::Select
+      DEFAULT_RENDERER = Renderer::Field::Select
+
       attribute :collection
     end
-
   end
-
 end

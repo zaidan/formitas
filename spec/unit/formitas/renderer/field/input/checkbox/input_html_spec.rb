@@ -7,11 +7,11 @@ unit_spec do
   let(:context) { mock('Context', :html_id => 'example') }
 
   before do
-    context.stub(:input_name).with(:field).and_return('example[field]')
-    context.stub(:value).with(:field).and_return(is_true)
+    context.stub(:html_name).with(:field).and_return('example[field]')
+    context.stub(:domain_value).with(:field).and_return(is_true)
   end
 
-  context 'when not checked' do
+  context 'when domain_value is false' do
     let(:is_true) { false }
 
     it 'should produce correct html' do
@@ -24,7 +24,7 @@ unit_spec do
     idempotent_method
   end
 
-  context 'when checked' do
+  context 'when domain_value is true' do
     let(:is_true) { true }
 
     it 'should produce correct html' do

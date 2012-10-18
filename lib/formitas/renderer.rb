@@ -4,6 +4,16 @@ module Formitas
   class Renderer
     include Adamantium, AbstractClass
 
+    # Render object
+    #
+    # @api private
+    # 
+    # @return [Object]
+    #
+    def self.render(*args)
+      new(*args).render
+    end
+
     # Define delegators
     #
     # @param [Symbol] *names
@@ -29,14 +39,13 @@ module Formitas
     #
     def self.delegate_method(name)
       class_eval(<<-RUBY, __FILE__, __LINE__+1)
-        def #{name}
-          @object.#{name}
+        def #{name}(*args)
+          @object.#{name}(*args)
         end
       RUBY
     end
     private_class_method :delegate_method
 
-    abstract_method :valid?
 
     # Return rendered object
     #
@@ -45,6 +54,18 @@ module Formitas
     # @api private
     #
     attr_reader :object
+    private :object
+
+    # Return rendering context
+    #
+    # @return [Object]
+    #
+    # @api private
+    #
+    attr_reader :context
+    private :context
+
+    abstract_method :render
 
     # Helper method that yields on error
     #
@@ -60,16 +81,21 @@ module Formitas
       self
     end
 
+    abstract_method :valid?
+
   private
 
     # Initialize object
     #
     # @param [Object] object
+    # @param [Object] context
+    #
+    # @return [undefined]
     #
     # @api private
     #
-    def initialize(object)
-      @object = object 
+    def initialize(object, context = Undefined)
+      @object, @context = object, context
     end
   end
 end

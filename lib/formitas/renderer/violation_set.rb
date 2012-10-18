@@ -3,20 +3,13 @@ module Formitas
     # Renderer for a set of violations
     class ViolationSet < self
 
-      attr_reader :field
-
-      def initialize(object, field)
-        super(object)
-        @field = field
-      end
-
       def empty?
         !violations.empty?
       end
 
       def violations
         object.map do |violation|
-          Violation.new(violation, field)
+          Violation.new(violation, context)
         end
       end
       memoize :violations

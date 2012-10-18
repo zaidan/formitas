@@ -9,8 +9,23 @@ module Formitas
     attribute :values
     attribute :validator
 
-    def value(name)
+    def domain_value(name)
       values.get(name)
+    end
+
+    # Return html value of named field
+    #
+    # @param [Symbol] name
+    #
+    # @return [String]
+    #   if value is present
+    #
+    # @return [nil]
+    #   otherwise
+    #
+    def html_value(name)
+      field = fields.get(name)
+      field.html_value(domain_value(name))
     end
 
     # Return if context is in a valid state

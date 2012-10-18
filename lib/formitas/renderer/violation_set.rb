@@ -25,21 +25,18 @@ module Formitas
         if violations.empty?
           ''
         else
-          content_tag(:div, inner_html, :class => :'error-messages')
+          HTML.content_tag(:div, inner_html, :class => :'error-messages')
         end
       end
       memoize :render
 
       def list_items_html
-        list_items = []
-        violations.each do |violation|
-          list_items << content_tag(:li, violation.render)
-        end
-        list_items.join('')
+        contents = violations.map { |violation| violation.render }
+        HTML.join(contents)
       end
 
       def inner_html
-        content_tag(:ul, list_items_html)
+        HTML.content_tag(:ul, list_items_html)
       end
       memoize :inner_html
     end

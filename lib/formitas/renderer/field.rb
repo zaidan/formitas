@@ -63,11 +63,11 @@ module Formitas
       # @api private
       #
       def inner_html
-        [
+        HTML.join([
           label_html,
           input_html,
           errors_html
-        ].join('')
+        ])
       end
 
       # Return css classes
@@ -90,7 +90,7 @@ module Formitas
       # @api private
       #
       def render
-        content_tag(:div, inner_html, :class => css_classes)
+        HTML.div(inner_html, :class => css_classes)
       end
       memoize :render
 
@@ -101,7 +101,7 @@ module Formitas
       # @api private
       #
       def label_html
-        content_tag(:label, label_text, :for => html_id)
+        HTML.label(label_text, :for => html_id)
       end
       memoize :label_html
 
@@ -212,13 +212,14 @@ module Formitas
         delegate :collection
 
         def input_html
-          content_tag(:select, options_html, :id => html_id, :name => input_name)
+          HTML.content_tag(:select, options_html, :id => html_id, :name => input_name)
         end
 
         def options_html
-          collection.map do |name|
+          contents = collection.map do |name|
             option_html(name)
-          end.join('')
+          end
+          HTML.join(contents)
         end
 
       private
@@ -226,7 +227,7 @@ module Formitas
         def option_html(name)
           attributes = { :value => name }
           attributes[:selected] = :selected if name == value
-          content_tag(:option, escape_html(name), attributes)
+          HTML.content_tag(:option, HTML.escape(name), attributes)
         end
       end
 
@@ -249,10 +250,11 @@ module Formitas
         end
 
         def input_html
-          tag(:input, :id => html_id, :type => type, :name => input_name, :value => input_value)
+          HTML.input(:id => html_id, :type => type, :name => input_name, :value => input_value)
         end
         memoize :input_html
 
+        # Renderer for <input type="text">
         class Text < self
           TYPE = :text
         end

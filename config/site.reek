@@ -24,7 +24,7 @@ LongParameterList:
   max_params: 2
   enabled: true
   exclude:
-  - Formitas::Fieldset::ClassMethods#field
+  - Formitas::HTML#self.content_tag
   overrides: {}
 FeatureEnvy:
   exclude: []

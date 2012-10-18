@@ -97,7 +97,7 @@ module Formitas
   end
 end
 
-require 'formitas/web_helpers'
+require 'formitas/html'
 require 'formitas/context'
 require 'formitas/renderer'
 require 'formitas/renderer/context'

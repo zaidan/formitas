@@ -2,7 +2,7 @@ module Formitas
 
   # Abstract base class for renderers
   class Renderer
-    include Adamantium, WebHelpers, AbstractClass
+    include Adamantium, AbstractClass
 
     # Define delegators
     #

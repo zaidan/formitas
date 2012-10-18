@@ -42,7 +42,7 @@ describe Formitas, 'rendering' do
     end
 
     it 'should render expected html' do
-      subject.split('><').join(">\n<").should eql(compress(<<-HTML))
+      subject.to_s.split('><').join(">\n<").should eql(compress(<<-HTML))
         <form action="/some/target" method="post" enctype="www-form-urlencoded">
           <div class="input">
             <label for="person_surname">Surname</label>
@@ -72,7 +72,7 @@ describe Formitas, 'rendering' do
     end
 
     it 'should render expected html' do
-      subject.split('><').join(">\n<").should eql(compress(<<-HTML))
+      subject.to_s.split('><').join(">\n<").should eql(compress(<<-HTML))
         <form action="/some/target" method="post" enctype="www-form-urlencoded">
           <div class="input">
             <label for="person_surname">Surname</label>
@@ -114,7 +114,7 @@ describe Formitas, 'rendering' do
     end
 
     it 'should render expected html' do
-      subject.split('><').join(">\n<").should eql(compress(<<-HTML))
+      subject.to_s.split('><').join(">\n<").should eql(compress(<<-HTML))
         <form action="/some/target" method="post" enctype="www-form-urlencoded">
           <div class="input error">
             <label for="person_surname">Surname</label>
@@ -124,9 +124,7 @@ describe Formitas, 'rendering' do
             </select>
             <div class="error-messages">
               <ul>
-                <li>
-                  <span class="error-message">Surname: Blank</span>
-                </li>
+                <li class="error-message">Surname: Blank</li>
               </ul>
             </div>
           </div>

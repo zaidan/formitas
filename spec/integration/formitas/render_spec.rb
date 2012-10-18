@@ -18,13 +18,13 @@ describe Formitas, 'rendering' do
 
   let(:membership_a) do 
     Class.new do 
-      def self.name; 'MembershipA'; end
+      def self.name; 'Membership-A'; end
     end
   end
 
   let(:membership_b) do 
     Class.new do 
-      def self.name; 'MembershipB'; end 
+      def self.name; 'Membership-B'; end 
     end
   end
 
@@ -41,19 +41,22 @@ describe Formitas, 'rendering' do
   let(:fields) do
     [
       Formitas::Field::Select.build(
+        :membership,
+        :collection => Formitas::Collection::Mapper.new(
+          :mapping => {
+            'membership-a' => membership_a,
+            'membership-b' => membership_b
+          },
+          :label_renderer => Formitas::Renderer::Label::Block.new { |object| object.domain_value.name.upcase }
+        )
+      ),
+      Formitas::Field::Select.build(
         :surname, 
         :collection => Formitas::Collection::String.new(
           :strings => %w(Mr Mrs)
         )
       ),
       Formitas::Field::String.build(:name),
-     #Formitas::Field::Select.build(
-     #  :membership,
-     #  :collection => Formitas::Collection::DomainMap.new(
-     #    'membership-a' => membership_a,
-     #    'membership-b' => membership_b
-     #  )
-     #),
       Formitas::Field::Boolean.build(:terms_of_service)
     ]
   end
@@ -71,6 +74,13 @@ describe Formitas, 'rendering' do
     it 'should render expected html' do
       subject.to_s.split('><').join(">\n<").should eql(compress(<<-HTML))
         <form action="/some/target" method="post" enctype="www-form-urlencoded">
+          <div class="input">
+            <label for="person_membership">Membership</label>
+            <select id="person_membership" name="person[membership]">
+              <option value="membership-a">MEMBERSHIP-A</option>
+              <option value="membership-b">MEMBERSHIP-B</option>
+            </select>
+          </div>
           <div class="input">
             <label for="person_surname">Surname</label>
             <select id="person_surname" name="person[surname]">
@@ -96,7 +106,12 @@ describe Formitas, 'rendering' do
   context 'with input' do
 
     let(:resource) do
-      model.new(:surname => 'Mr', :name => 'Markus Schirp', :terms_of_service => true)
+      model.new(
+        :membership => membership_a,
+        :surname => 'Mr', 
+        :name => 'Markus Schirp', 
+        :terms_of_service => true
+      )
     end
 
     let(:attributes) do
@@ -111,6 +126,13 @@ describe Formitas, 'rendering' do
     it 'should render expected html' do
       subject.to_s.split('><').join(">\n<").should eql(compress(<<-HTML))
         <form action="/some/target" method="post" enctype="www-form-urlencoded">
+          <div class="input">
+            <label for="person_membership">Membership</label>
+            <select id="person_membership" name="person[membership]">
+              <option value="membership-a" selected="selected">MEMBERSHIP-A</option>
+              <option value="membership-b">MEMBERSHIP-B</option>
+            </select>
+          </div>
           <div class="input">
             <label for="person_surname">Surname</label>
             <select id="person_surname" name="person[surname]">
@@ -137,6 +159,7 @@ describe Formitas, 'rendering' do
     let(:validator) do
       Class.new do
         include Aequitas::Validator
+        validates_presence_of :membership
         validates_presence_of :surname
         validates_presence_of :name
         validates_acceptance_of :terms_of_service
@@ -159,6 +182,18 @@ describe Formitas, 'rendering' do
     it 'should render expected html' do
       subject.to_s.split('><').join(">\n<").should eql(compress(<<-HTML))
         <form action="/some/target" method="post" enctype="www-form-urlencoded">
+          <div class="input error">
+            <label for="person_membership">Membership</label>
+            <select id="person_membership" name="person[membership]">
+              <option value="membership-a">MEMBERSHIP-A</option>
+              <option value="membership-b">MEMBERSHIP-B</option>
+            </select>
+            <div class="error-messages">
+              <ul>
+                <li class="error-message">Membership: Blank</li>
+              </ul>
+            </div>
+          </div>
           <div class="input error">
             <label for="person_surname">Surname</label>
             <select id="person_surname" name="person[surname]">

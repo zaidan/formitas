@@ -34,10 +34,12 @@ module Formitas
       end
     end
 
+    # Boolean field with true and false as domain values
     class Boolean < self
       DEFAULT_RENDERER = Renderer::Field::Input::Checkbox
     end
 
+    # Select 
     class Select < self
       DEFAULT_RENDERER = Renderer::Field::Select
 

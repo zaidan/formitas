@@ -17,13 +17,6 @@ module Formitas
       end
       memoize :render
 
-      class Label < Renderer
-        class HTMLValue < self
-          def self.render(option)
-            option.html_value
-          end
-        end
-      end
     end
   end
 end

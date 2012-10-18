@@ -14,8 +14,11 @@ module Formitas
       self::DEFAULT_LABEL_RENDERER
     end
 
+    abstract_method :each
+
     attribute :label_renderer, DefaultLabelRenderer
 
+    # Html value and domain value as string
     class String < self
       DEFAULT_LABEL_RENDERER = Renderer::Label::HTMLValue
 
@@ -30,16 +33,20 @@ module Formitas
       end
     end
 
-    class Hash < self
-      DEFAULT_LABEL_RENDERER = Renderer::Label::HTMLValue
+    # Mapp html value to domain value
+    class Mapper < self
+      DEFAULT_LABEL_RENDERER = Renderer::Label::DomainValue
 
-      attribute :hash
+      attribute :mapping
+
       def each
         return to_enum unless block_given?
 
-        hash.each do |key,html_value|
-          yield Option.new(key, html_value)
+        mapping.each do |html_value, domain_value|
+          yield Option.new(:html_value => html_value, :domain_value => domain_value)
         end
+
+        self
       end
     end
   end

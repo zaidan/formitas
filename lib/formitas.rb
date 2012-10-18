@@ -105,6 +105,7 @@ require 'formitas/renderer/option'
 require 'formitas/renderer/field'
 require 'formitas/renderer/field/input'
 require 'formitas/renderer/field/select'
+require 'formitas/renderer/field/textarea'
 require 'formitas/renderer/violation'
 require 'formitas/renderer/violation_set'
 

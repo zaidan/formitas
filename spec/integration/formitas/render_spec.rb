@@ -34,6 +34,7 @@ describe Formitas, 'rendering' do
       attribute :membership,        Object
       attribute :surname,           String
       attribute :name,              String
+      attribute :text,              String
       attribute :terms_of_service,  Virtus::Attribute::Boolean
     end
   end
@@ -57,7 +58,8 @@ describe Formitas, 'rendering' do
         )
       ),
       Formitas::Field::String.build(:name),
-      Formitas::Field::Boolean.build(:terms_of_service)
+      Formitas::Field::Boolean.build(:terms_of_service),
+      Formitas::Field::String.build(:text, :renderer => Formitas::Renderer::Field::Textarea)
     ]
   end
 
@@ -97,6 +99,11 @@ describe Formitas, 'rendering' do
             <input type="hidden" name="person[terms_of_service]" value="0"/>
             <input id="person_terms_of_service" type="checkbox" name="person[terms_of_service]" value="1" checked=""/>
           </div>
+          <div class="input">
+            <label for="person_text">Text</label>
+            <textarea id="person_text" name="person[text]">
+            </textarea>
+          </div>
         </form>
       HTML
     end
@@ -110,7 +117,8 @@ describe Formitas, 'rendering' do
         :membership => membership_a,
         :surname => 'Mr', 
         :name => 'Markus Schirp', 
-        :terms_of_service => true
+        :terms_of_service => true,
+        :text => 'Foo'
       )
     end
 
@@ -149,6 +157,10 @@ describe Formitas, 'rendering' do
             <input type="hidden" name="person[terms_of_service]" value="0"/>
             <input id="person_terms_of_service" type="checkbox" name="person[terms_of_service]" value="1" checked="checked"/>
           </div>
+          <div class="input">
+            <label for="person_text">Text</label>
+            <textarea id="person_text" name="person[text]">Foo</textarea>
+          </div>
         </form>
       HTML
     end
@@ -162,6 +174,7 @@ describe Formitas, 'rendering' do
         validates_presence_of :membership
         validates_presence_of :surname
         validates_presence_of :name
+        validates_presence_of :text
         validates_acceptance_of :terms_of_service
       end
     end
@@ -214,6 +227,16 @@ describe Formitas, 'rendering' do
             <label for="person_terms_of_service">Terms of service</label>
             <input type="hidden" name="person[terms_of_service]" value="0"/>
             <input id="person_terms_of_service" type="checkbox" name="person[terms_of_service]" value="1" checked=""/>
+          </div>
+          <div class="input error">
+            <label for="person_text">Text</label>
+            <textarea id="person_text" name="person[text]">
+            </textarea>
+            <div class="error-messages">
+              <ul>
+                <li class="error-message">Text: Blank</li>
+              </ul>
+            </div>
           </div>
         </form>
       HTML

@@ -103,6 +103,7 @@ require 'formitas/renderer'
 require 'formitas/renderer/context'
 require 'formitas/renderer/context/form'
 require 'formitas/renderer/field'
+require 'formitas/renderer/field/input'
 require 'formitas/renderer/violation'
 require 'formitas/renderer/violation_set'
 

@@ -7,7 +7,7 @@ module Formitas
 
     # An html fragment
     class Fragment
-      include Adamantium
+      include Adamantium, Equalizer.new(:to_s)
 
       def initialize(string)
         @string = string.dup.freeze

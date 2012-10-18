@@ -231,34 +231,6 @@ module Formitas
         end
       end
 
-      # Renderer for <input type="checkbox">
-      class Checkbox < self
-      end
-
-      # Abstract class for <input> tag fields
-      class Input < self
-
-        def input_value
-          value = self.value
-          value_or_undefined = value
-          value_or_undefined.equal?(Undefined) ? '' : value
-        end
-        memoize :input_value
-
-        def type
-          self.class::TYPE
-        end
-
-        def input_html
-          HTML.input(:id => html_id, :type => type, :name => input_name, :value => input_value)
-        end
-        memoize :input_html
-
-        # Renderer for <input type="text">
-        class Text < self
-          TYPE = :text
-        end
-      end
     end
   end
 end

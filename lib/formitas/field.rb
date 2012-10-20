@@ -1,156 +1,49 @@
-#encoding: utf-8
 module Formitas
-  # Represent a HTML form field
+
+  # This hierarchy is stupid will replace it 
+  # with task oriented inputs and configurable renderers soon.
+
+  # Abstract base class for a form field 
   class Field
-    include Virtus::ValueObject, WebHelpers, AbstractClass, Immutable
+    include Anima, AbstractClass, Adamantium
 
-    attribute :name,  Symbol
-    
-    attribute :basename,  Symbol
-    
-    attribute :input, Object, :default => NullInput
-    
-    # Return Field as HTML content
-    #
-    # @param [Symbol] tag_name
-    #   html content tag name
-    #
-    # @return [String]
-    #   with rendered HTML content
-    # 
-    # @api private  
-    #
-    def render(tag_name = :div)
-      contents = [
-        label_tag,
-        input_tag,
-        error_tag
-      ]
-      content_tag(tag_name, contents.join(''), :class => :input)
+    # Attribute with default renderer lookup
+    class DefaultRenderer < Anima::Attribute
+      DEFAULT = Anima::Default::Generator.new do |object|
+        object.class.default_renderer
+      end
     end
-    memoize :render
 
-  private
+    attribute :name
+    attribute :renderer, DefaultRenderer
 
-    # Return HTML input tag
-    #
-    # @return [String]
-    #   with HTML input tag
-    # 
-    # @api private  
-    #
-    abstract_method :input_tag
-    
-    # Return HTML id
-    #
-    # @return [String]
-    #   with HTML id
-    # 
-    # @api private  
-    #
-    def html_id
-      "#{basename}_#{name}"
+    def self.default_renderer
+      self::DEFAULT_RENDERER
     end
-    memoize :html_id
 
-    # Return HTML name
-    #
-    # @return [String]
-    #   with HTML name
-    # 
-    # @api private  
-    #
-    def html_name
-      "#{basename}[#{name}]"
+    def self.build(name, options = {})
+      new(options.merge(:name => name))
     end
-    memoize :html_name
 
-    # Return HTML value
-    #
-    # @return [String]
-    #   with HTML value
-    # 
-    # @api private  
-    #
-    def html_value
-      input_hash[input_hash_key]
-    end
-    memoize :html_value
+    # Abstract base class for <input> fields
+    class String < self
+      DEFAULT_RENDERER = Renderer::Field::Input::Text
 
-    # Return input hash key
-    #
-    # @return [String]
-    #   with valid hash key if input was found
-    # @return [nil]
-    #   otherwise
-    # 
-    # @api private  
-    #
-    def input_hash_key
-      input_hash.keys.detect { |key| key.to_sym == name.to_sym }
+      def html_value(object)
+        object.to_s
+      end
     end
-    memoize :input_hash_key
 
-    # Return input hash
-    #
-    # @return [Hash]
-    #   input hash
-    # 
-    # @api private  
-    #
-    def input_hash
-      input.input_hash
+    # Boolean field with true and false as domain values
+    class Boolean < self
+      DEFAULT_RENDERER = Renderer::Field::Input::Checkbox
     end
-    memoize :input_hash
-    
-    # Return localized HTML label
-    #
-    # @return [String]
-    #   with HTML label
-    # 
-    # @api private  
-    #
-    def label
-      translate(:label, :scope => [basename, name])
-    end
-    memoize :label
 
-    # Return HTML label tag
-    #
-    # @return [String]
-    #   with HTML label tag
-    # 
-    # @api private  
-    #
-    def label_tag
-      content_tag(:label, label, :for => html_id)
-    end
-    memoize :label_tag
+    # Select 
+    class Select < self
+      DEFAULT_RENDERER = Renderer::Field::Select
 
-    # Return errors as HTML code
-    #
-    # @return [String]
-    #   when input is not valid
-    #
-    # @return [nil]
-    #   otherwise 
-    # 
-    # @api private  
-    #
-    def error_tag
-      Dumper::Errors.dump(input_errors, html_id) unless input.valid?
+      attribute :collection
     end
-    memoize :error_tag
-
-    # Return input errors for field
-    #
-    # @return [Enumerable]
-    #
-    # @api private
-    #
-    def input_errors
-      input.errors.on(name)
-    end
-    memoize :input_errors
   end
 end

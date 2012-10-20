@@ -2,14 +2,15 @@ source 'https://rubygems.org'
 
 gemspec
 
-gem 'aequitas',            :git => 'https://github.com/mbj/aequitas.git'
+gem 'aequitas',            :git => 'https://github.com/mbj/aequitas.git', :branch => :'context-free'
 gem 'abstract_class',      :git => 'https://github.com/dkubb/abstract_class.git'
-gem 'immutable',           :git => 'https://github.com/dkubb/immutable.git', :branch => :experimental
+gem 'adamantium',          :git => 'https://github.com/mbj/adamantium.git', :branch => :'no-deep-freeze-etc'
 gem 'descendants_tracker', :git => 'https://github.com/dkubb/descendants_tracker.git'
 gem 'equalizer',           :git => 'https://github.com/dkubb/equalizer.git'
+gem 'anima',               :git => 'https://github.com/mbj/anima.git'
+gem 'inflector',           :git => 'https://github.com/mbj/inflector.git'
 gem 'i18n'
 gem 'rack'
-gem 'virtus'
 
 group :development do
   gem 'rake'
